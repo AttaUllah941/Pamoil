@@ -1,0 +1,79 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Our Products</h1>
+    <p class="text-gray-600">Premium natural hair oils for every hair type</p>
+  </div>
+
+  <div class="flex flex-col md:flex-row gap-8">
+    <!-- Categories Sidebar -->
+    <aside class="md:w-64 flex-shrink-0">
+      <div class="card p-6 sticky top-20">
+        <h2 class="font-semibold mb-4">Categories</h2>
+        <ul class="space-y-2">
+          <li *ngFor="let category of categories">
+            <button
+              (click)="selectCategory(category.id)"
+              [class.bg-primary-100]="selectedCategory === category.id"
+              [class.text-primary-700]="selectedCategory === category.id"
+              class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              {{ category.name }}
+            </button>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Products Grid -->
+    <main class="flex-1">
+      <div *ngIf="loading; else productsContent">
+        <app-loading></app-loading>
+      </div>
+
+      <ng-template #productsContent>
+        <div *ngIf="products.length > 0; else noProducts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div *ngFor="let product of products" class="card group cursor-pointer" routerLink="/products/{{ product.id }}">
+            <div class="relative overflow-hidden">
+              <img
+                [src]="product.images[0]"
+                [alt]="product.name"
+                class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div *ngIf="product.originalPrice" class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                {{ ((product.originalPrice - product.price) / product.originalPrice * 100).toFixed(0) }}% OFF
+              </div>
+              <div *ngIf="!product.inStock" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <span class="text-white font-semibold text-lg">Out of Stock</span>
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-2">{{ product.name }}</h3>
+              <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ product.description }}</p>
+              <div class="flex items-center mb-4">
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                  </svg>
+                  <span class="ml-1 text-sm font-medium">{{ product.rating }}</span>
+                  <span class="ml-1 text-sm text-gray-500">({{ product.reviewsCount }})</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-2xl font-bold text-primary-600">${{ product.price }}</span>
+                  <span *ngIf="product.originalPrice" class="ml-2 text-gray-400 line-through text-sm">${{ product.originalPrice }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noProducts>
+          <div class="text-center py-12">
+            <p class="text-gray-500 text-lg">No products found.</p>
+          </div>
+        </ng-template>
+      </ng-template>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,156 @@
+<!-- Hero Banner -->
+<section class="relative bg-gradient-to-r from-primary-600 to-herbal-600 text-white py-20">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl">
+      <h1 class="text-5xl font-bold mb-6">Transform Your Hair Naturally</h1>
+      <p class="text-xl mb-8 text-primary-100">
+        Discover our premium collection of natural hair oils. Nourish, strengthen, and shine with nature's best ingredients.
+      </p>
+      <div class="flex space-x-4">
+        <a routerLink="/products" class="btn-secondary bg-white text-primary-600 hover:bg-gray-100">
+          Shop Now
+        </a>
+        <a routerLink="/articles" class="btn-outline border-white text-white hover:bg-white hover:text-primary-600">
+          Learn More
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Products</h2>
+      <p class="text-gray-600">Our most loved hair oils</p>
+    </div>
+
+    <div *ngIf="loading; else productsGrid">
+      <app-loading></app-loading>
+    </div>
+
+    <ng-template #productsGrid>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div *ngFor="let product of featuredProducts" class="card group cursor-pointer" routerLink="/products/{{ product.id }}">
+          <div class="relative overflow-hidden">
+            <img
+              [src]="product.images[0]"
+              [alt]="product.name"
+              class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+            />
+            <div *ngIf="product.originalPrice" class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              {{ ((product.originalPrice - product.price) / product.originalPrice * 100).toFixed(0) }}% OFF
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">{{ product.name }}</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ product.description }}</p>
+            <div class="flex items-center mb-4">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+                <span class="ml-1 text-sm font-medium">{{ product.rating }}</span>
+                <span class="ml-1 text-sm text-gray-500">({{ product.reviewsCount }})</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-2xl font-bold text-primary-600">${{ product.price }}</span>
+                <span *ngIf="product.originalPrice" class="ml-2 text-gray-400 line-through">${{ product.originalPrice }}</span>
+              </div>
+              <a routerLink="/products/{{ product.id }}" class="btn-primary text-sm">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="text-center mt-12">
+      <a routerLink="/products" class="btn-outline">View All Products</a>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose Our Hair Oils?</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="text-center">
+        <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">100% Natural</h3>
+        <p class="text-gray-600">Pure, organic ingredients sourced from nature's finest</p>
+      </div>
+      <div class="text-center">
+        <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Fast Results</h3>
+        <p class="text-gray-600">See visible improvements in hair health within weeks</p>
+      </div>
+      <div class="text-center">
+        <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Expert Formulated</h3>
+        <p class="text-gray-600">Developed by hair care specialists for optimal results</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Hair Care Articles -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Hair Care Tips & Guides</h2>
+      <p class="text-gray-600">Learn how to care for your hair naturally</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div *ngFor="let article of articles" class="card cursor-pointer" routerLink="/articles/{{ article.id }}">
+        <div *ngIf="article.image" class="h-48 overflow-hidden">
+          <img [src]="article.image" [alt]="article.title" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6">
+          <span class="text-xs px-2 py-1 bg-primary-100 text-primary-700 rounded-full capitalize">{{ article.category }}</span>
+          <h3 class="text-xl font-semibold mt-4 mb-2">{{ article.title }}</h3>
+          <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ article.excerpt }}</p>
+          <div class="flex items-center justify-between text-sm text-gray-500">
+            <span>{{ article.readTime }} min read</span>
+            <a routerLink="/articles/{{ article.id }}" class="text-primary-600 hover:text-primary-700 font-medium">
+              Read More →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-12">
+      <a routerLink="/articles" class="btn-outline">View All Articles</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-primary-600 text-white">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-4">Ready to Transform Your Hair?</h2>
+    <p class="text-xl mb-8 text-primary-100">Join thousands of satisfied customers</p>
+    <a routerLink="/products" class="btn-secondary bg-white text-primary-600 hover:bg-gray-100">
+      Shop Now
+    </a>
+  </div>
+</section>

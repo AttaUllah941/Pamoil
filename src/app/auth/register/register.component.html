@@ -1,0 +1,98 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-herbal-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <div class="flex justify-center">
+        <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center">
+          <span class="text-white font-bold text-2xl">H</span>
+        </div>
+      </div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Create your account
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Or
+        <a routerLink="/login" class="font-medium text-primary-600 hover:text-primary-500">
+          sign in to your existing account
+        </a>
+      </p>
+    </div>
+    <form class="mt-8 space-y-6" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div class="space-y-4">
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            [(ngModel)]="userData.name"
+            class="mt-1 input-field"
+            placeholder="John Doe"
+          />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            [(ngModel)]="userData.email"
+            class="mt-1 input-field"
+            placeholder="john@example.com"
+          />
+        </div>
+        <div>
+          <label for="phone" class="block text-sm font-medium text-gray-700">Phone (Optional)</label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            [(ngModel)]="userData.phone"
+            class="mt-1 input-field"
+            placeholder="+1234567890"
+          />
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            [(ngModel)]="userData.password"
+            class="mt-1 input-field"
+            placeholder="••••••••"
+          />
+        </div>
+        <div>
+          <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            required
+            [(ngModel)]="userData.confirmPassword"
+            class="mt-1 input-field"
+            placeholder="••••••••"
+          />
+        </div>
+      </div>
+
+      <div *ngIf="error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+        {{ error }}
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          [disabled]="loading || !registerForm.valid"
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span *ngIf="!loading">Create Account</span>
+          <span *ngIf="loading">Creating account...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

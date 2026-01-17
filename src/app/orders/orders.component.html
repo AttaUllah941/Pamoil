@@ -1,0 +1,124 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-gray-900 mb-8">
+    {{ selectedOrder ? 'Order Details' : 'My Orders' }}
+  </h1>
+
+  <div *ngIf="loading; else ordersContent">
+    <app-loading></app-loading>
+  </div>
+
+  <ng-template #ordersContent>
+    <div *ngIf="selectedOrder; else ordersList">
+      <!-- Order Details -->
+      <div class="card p-6 mb-6">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h2 class="text-2xl font-semibold mb-2">Order #{{ selectedOrder.id }}</h2>
+            <p class="text-gray-600">Placed on {{ selectedOrder.createdAt | date:'fullDate' }}</p>
+          </div>
+          <span [class]="'px-3 py-1 rounded-full text-sm font-medium ' + getStatusColor(selectedOrder.status)">
+            {{ selectedOrder.status | titlecase }}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <h3 class="font-semibold mb-2">Shipping Address</h3>
+            <p class="text-gray-700">{{ selectedOrder.shippingAddress.fullName }}</p>
+            <p class="text-gray-700">{{ selectedOrder.shippingAddress.addressLine1 }}</p>
+            <p class="text-gray-700" *ngIf="selectedOrder.shippingAddress.addressLine2">
+              {{ selectedOrder.shippingAddress.addressLine2 }}
+            </p>
+            <p class="text-gray-700">
+              {{ selectedOrder.shippingAddress.city }}, {{ selectedOrder.shippingAddress.state }} {{ selectedOrder.shippingAddress.zipCode }}
+            </p>
+            <p class="text-gray-700">{{ selectedOrder.shippingAddress.phone }}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">Payment Information</h3>
+            <p class="text-gray-700">Method: {{ selectedOrder.paymentMethod | titlecase }}</p>
+            <p class="text-gray-700">
+              Status: 
+              <span [class]="selectedOrder.paymentStatus === 'paid' ? 'text-green-600' : 'text-yellow-600'">
+                {{ selectedOrder.paymentStatus | titlecase }}
+              </span>
+            </p>
+            <p class="text-gray-700" *ngIf="selectedOrder.trackingNumber">
+              Tracking: {{ selectedOrder.trackingNumber }}
+            </p>
+          </div>
+        </div>
+
+        <div class="border-t pt-6">
+          <h3 class="font-semibold mb-4">Order Items</h3>
+          <div class="space-y-4">
+            <div *ngFor="let item of selectedOrder.items" class="flex items-center space-x-4">
+              <img [src]="item.image" [alt]="item.product.name" class="w-20 h-20 object-cover rounded">
+              <div class="flex-1">
+                <h4 class="font-medium">{{ item.product.name }}</h4>
+                <p class="text-sm text-gray-600">Size: {{ item.size }} | Qty: {{ item.quantity }}</p>
+              </div>
+              <p class="font-semibold">${{ (item.price * item.quantity).toFixed(2) }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t mt-6 pt-6">
+          <div class="flex justify-end">
+            <div class="w-64 space-y-2">
+              <div class="flex justify-between">
+                <span>Subtotal:</span>
+                <span>${{ selectedOrder.subtotal.toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Shipping:</span>
+                <span>${{ selectedOrder.shipping.toFixed(2) }}</span>
+              </div>
+              <div *ngIf="selectedOrder.discount" class="flex justify-between text-green-600">
+                <span>Discount:</span>
+                <span>-${{ selectedOrder.discount.toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between text-lg font-bold border-t pt-2">
+                <span>Total:</span>
+                <span>${{ selectedOrder.total.toFixed(2) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a routerLink="/orders" class="btn-outline">Back to Orders</a>
+    </div>
+
+    <ng-template #ordersList>
+      <div *ngIf="orders.length > 0; else noOrders" class="space-y-4">
+        <div *ngFor="let order of orders" class="card p-6 cursor-pointer" routerLink="/orders/{{ order.id }}">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Order #{{ order.id }}</h3>
+              <p class="text-gray-600 text-sm mb-2">Placed on {{ order.createdAt | date:'medium' }}</p>
+              <p class="text-gray-600 text-sm">{{ order.items.length }} item(s)</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xl font-bold mb-2">${{ order.total.toFixed(2) }}</p>
+              <span [class]="'px-3 py-1 rounded-full text-sm font-medium ' + getStatusColor(order.status)">
+                {{ order.status | titlecase }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noOrders>
+        <div class="text-center py-12">
+          <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <h2 class="text-2xl font-bold mb-2">No orders yet</h2>
+          <p class="text-gray-600 mb-6">Start shopping to see your orders here</p>
+          <a routerLink="/products" class="btn-primary">Browse Products</a>
+        </div>
+      </ng-template>
+    </ng-template>
+  </ng-template>
+</div>
